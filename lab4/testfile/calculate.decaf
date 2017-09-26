@@ -1,0 +1,62 @@
+class Claculate
+{
+    int getSum(int n)
+    {
+        int i;
+        int sum;
+        sum = 0;
+        for (i = 1; i <= n; i = i + 1)
+            sum = sum + i;
+        return sum;
+    }
+
+    int getMul(int n)
+    {
+        int i;
+        int mul;
+        mul = 1;
+        for (i = 1; i <= n; i = i + 1)
+            mul = mul * i;
+        return mul;
+    }
+
+    int getMulSum(int n)
+    {
+        int i;
+        int mul;
+        int sum;
+        mul = 1;
+        for (i = 1; i <= n; i = i + 1)
+        {
+            mul = mul * i;
+            sum = sum + mul;
+        }
+        return sum;
+    }
+}
+
+class Main
+{
+    int main()
+    {
+        int n;
+        int result1;
+        int result2;
+        int result3;
+        class Claculate calc;
+        calc = new Claculate();
+        Print("Input n now");
+        n = ReadInteger();
+        Print("n is on digits now");
+        result1 = calc.getMulSum(n);
+        Print(result1);
+        Print("The total factorial is on digits");
+        result2 = calc.getSum(n);
+        Print(result2);
+        Print("The sum is on digits");
+        result3 = calc.getMul(n);
+        Print(result3);
+        Print("The factorial is on digits");
+        return 0;
+    }
+}

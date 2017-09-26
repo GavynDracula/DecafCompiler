@@ -1,0 +1,44 @@
+class Computer {}
+
+class Computer
+{
+    int cpu;
+    void Crash(int numTimes)
+    {
+        int i;
+        class Pro laptop;
+        laptop = new Pro();
+        j = 1;
+        Computer = 1;
+        i = -0.1;
+        i.test();
+        test();
+        for (i = 0; i < numTimes; i = i + 1)
+            Print("sad\n");
+    }
+    void cpu()
+    {
+    }
+}
+
+
+class Mac extends Computers
+{
+    int mouse;
+    void Crash(int numTimes)
+    {
+        Print("ack!");
+    }
+}
+
+class Main
+{
+    static void main()
+    {
+        class Mac powerbook;
+        powerbook = new Mac();
+        powerbook.Crash(2);
+        powerbook.keybord = 1;
+        powerbook.PowerOn();
+    }
+}

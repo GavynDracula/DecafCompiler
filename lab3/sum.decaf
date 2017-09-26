@@ -1,0 +1,26 @@
+class Sum
+{
+    int getSum(int n)
+    {
+        int i;
+        int sum;
+        sum = 0;
+        for (i = 1; i <= n; i = i + 1)
+            sum = sum + i;
+        return sum;
+    }
+}
+
+class Main
+{
+    int main()
+    {
+        int n;
+        int result;
+        class Sum sum;
+        sum = new Sum();
+        n = 10;
+        result = sum.getSum(n);
+        return 0;
+    }
+}

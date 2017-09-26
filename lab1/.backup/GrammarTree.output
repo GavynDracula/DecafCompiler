@@ -1,0 +1,3113 @@
+Grammar
+
+    0 $accept: Program $end
+
+    1 Program: ClassDef
+    2        | Program ClassDef
+
+    3 VariableDef: Variable SPSEMICOLON
+
+    4 Variable: Type IDENTIFIER
+
+    5 Type: TYPEINTEGER
+    6     | TYPEFLOAT
+    7     | TYPEBOOL
+    8     | TYPESTRING
+    9     | TYPEVOID
+   10     | KEYCLASS IDENTIFIER
+   11     | Type OPLEFTBRACKET OPRIGHTBRACKET
+
+   12 Variables: Variable
+   13          | Variables SPCOMMA Variable
+
+   14 Formals: %empty
+   15        | Variables
+
+   16 FunctionDef: Type IDENTIFIER OPLEFTPRNT Formals OPRIGHTPRNT StmtBlock
+   17            | KEYSTATIC Type IDENTIFIER OPLEFTPRNT Formals OPRIGHTPRNT StmtBlock
+
+   18 ClassDef: KEYCLASS IDENTIFIER SPLEFTBRACE Fields SPRIGHTBRACE
+   19         | KEYCLASS IDENTIFIER KEYEXTENDS IDENTIFIER SPLEFTBRACE Fields SPRIGHTBRACE
+
+   20 Fields: %empty
+   21       | Fields Field
+
+   22 Field: VariableDef
+   23      | FunctionDef
+
+   24 StmtBlock: SPLEFTBRACE Stmts SPRIGHTBRACE
+
+   25 Stmts: %empty
+   26      | Stmts Stmt
+
+   27 Stmt: VariableDef
+   28     | SimpleStmt SPSEMICOLON
+   29     | IfStmt
+   30     | WhileStmt
+   31     | ForStmt
+   32     | BreakStmt SPSEMICOLON
+   33     | ReturnStmt SPSEMICOLON
+   34     | PrintStmt SPSEMICOLON
+   35     | StmtBlock
+
+   36 SimpleStmt: %empty
+   37           | LValue OPASSIGN Expr
+   38           | Call
+
+   39 LValue: IDENTIFIER
+   40       | Expr SPDOT IDENTIFIER
+   41       | Expr OPLEFTBRACKET Expr OPRIGHTBRACKET
+
+   42 Call: IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   43     | Expr SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+
+   44 Actuals: %empty
+   45        | Exprs
+
+   46 Exprs: Expr
+   47      | Exprs SPCOMMA Expr
+
+   48 ForStmt: KEYFOR OPLEFTPRNT SimpleStmt SPSEMICOLON BoolExpr SPSEMICOLON SimpleStmt OPRIGHTPRNT Stmt
+
+   49 WhileStmt: KEYWHILE OPLEFTPRNT BoolExpr OPRIGHTPRNT Stmt
+
+   50 IfStmt: KEYIF OPLEFTPRNT BoolExpr OPRIGHTPRNT Stmt
+   51       | KEYIF OPLEFTPRNT BoolExpr OPRIGHTPRNT Stmt KEYELSE Stmt
+
+   52 ReturnStmt: KEYRETURN
+   53           | KEYRETURN Expr
+
+   54 BreakStmt: KEYBREAK
+
+   55 PrintStmt: KEYPRINT OPLEFTPRNT Exprs OPRIGHTPRNT
+
+   56 BoolExpr: Expr
+
+   57 Expr: Constant
+   58     | LValue
+   59     | KEYTHIS
+   60     | Call
+   61     | OPLEFTPRNT Expr OPRIGHTPRNT
+   62     | Expr OPPLUS Expr
+   63     | Expr OPMINUS Expr
+   64     | Expr OPMULTIPLY Expr
+   65     | Expr OPDIVIDE Expr
+   66     | OPMINUS Expr
+   67     | Expr OPLIGHT Expr
+   68     | Expr OPLIGHTEQ Expr
+   69     | Expr OPGREAT Expr
+   70     | Expr OPGREATEQ Expr
+   71     | Expr OPEQUAL Expr
+   72     | Expr OPNOTEQUAL Expr
+   73     | Expr OPAND Expr
+   74     | Expr OPOR Expr
+   75     | OPNOT Expr
+   76     | KEYREADINTEGER OPLEFTPRNT OPRIGHTPRNT
+   77     | KEYREADLINE OPLEFTPRNT OPRIGHTPRNT
+   78     | KEYNEW IDENTIFIER OPLEFTPRNT OPRIGHTPRNT
+   79     | KEYNEW Type OPLEFTBRACKET Expr OPRIGHTBRACKET
+   80     | KEYINSTANCEOF OPLEFTPRNT Expr SPCOMMA IDENTIFIER OPRIGHTPRNT
+   81     | OPLEFTPRNT KEYCLASS IDENTIFIER OPRIGHTPRNT Expr
+
+   82 Constant: CONSTANTINTD
+   83         | CONSTANTINTH
+   84         | CONSTANTFLOAT
+   85         | CONSTANTFLOATSC
+   86         | CONSTANTBOOL
+   87         | CONSTANTSTRING
+   88         | CONSTANTNULL
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+SPSEMICOLON (258) 3 28 32 33 34 48
+SPCOMMA (259) 13 47 80
+SPDOT (260) 40 43
+SPLEFTBRACE (261) 18 19 24
+SPRIGHTBRACE (262) 18 19 24
+OPLEFTPRNT (263) 16 17 42 43 48 49 50 51 55 61 76 77 78 80 81
+OPRIGHTPRNT (264) 16 17 42 43 48 49 50 51 55 61 76 77 78 80 81
+OPLEFTBRACKET (265) 11 41 79
+OPRIGHTBRACKET (266) 11 41 79
+OPPLUS (267) 62
+OPMINUS (268) 63 66
+OPMULTIPLY (269) 64
+OPDIVIDE (270) 65
+OPASSIGN (271) 37
+OPAND (272) 73
+OPOR (273) 74
+OPNOT (274) 75
+OPEQUAL (275) 71
+OPNOTEQUAL (276) 72
+OPGREAT (277) 69
+OPLIGHT (278) 67
+OPGREATEQ (279) 70
+OPLIGHTEQ (280) 68
+TYPEVOID (281) 9
+TYPEINTEGER (282) 5
+TYPEFLOAT (283) 6
+TYPEBOOL (284) 7
+TYPESTRING (285) 8
+KEYCLASS (286) 10 18 19 81
+KEYNEW (287) 78 79
+KEYEXTENDS (288) 19
+KEYTHIS (289) 59
+KEYINSTANCEOF (290) 80
+KEYIF (291) 50 51
+KEYELSE (292) 51
+KEYFOR (293) 48
+KEYWHILE (294) 49
+KEYBREAK (295) 54
+KEYRETURN (296) 52 53
+KEYSTATIC (297) 17
+KEYPRINT (298) 55
+KEYREADINTEGER (299) 76
+KEYREADLINE (300) 77
+CONSTANTNULL (301) 88
+CONSTANTBOOL (302) 86
+CONSTANTINTD (303) 82
+CONSTANTINTH (304) 83
+CONSTANTFLOAT (305) 84
+CONSTANTFLOATSC (306) 85
+CONSTANTSTRING (307) 87
+IDENTIFIER (308) 4 10 16 17 18 19 39 40 42 43 78 80 81
+LOWER_THAN_ELSE (309)
+
+
+Nonterminals, with rules where they appear
+
+$accept (55)
+    on left: 0
+Program (56)
+    on left: 1 2, on right: 0 2
+VariableDef (57)
+    on left: 3, on right: 22 27
+Variable (58)
+    on left: 4, on right: 3 12 13
+Type (59)
+    on left: 5 6 7 8 9 10 11, on right: 4 11 16 17 79
+Variables (60)
+    on left: 12 13, on right: 13 15
+Formals (61)
+    on left: 14 15, on right: 16 17
+FunctionDef (62)
+    on left: 16 17, on right: 23
+ClassDef (63)
+    on left: 18 19, on right: 1 2
+Fields (64)
+    on left: 20 21, on right: 18 19 21
+Field (65)
+    on left: 22 23, on right: 21
+StmtBlock (66)
+    on left: 24, on right: 16 17 35
+Stmts (67)
+    on left: 25 26, on right: 24 26
+Stmt (68)
+    on left: 27 28 29 30 31 32 33 34 35, on right: 26 48 49 50 51
+SimpleStmt (69)
+    on left: 36 37 38, on right: 28 48
+LValue (70)
+    on left: 39 40 41, on right: 37 58
+Call (71)
+    on left: 42 43, on right: 38 60
+Actuals (72)
+    on left: 44 45, on right: 42 43
+Exprs (73)
+    on left: 46 47, on right: 45 47 55
+ForStmt (74)
+    on left: 48, on right: 31
+WhileStmt (75)
+    on left: 49, on right: 30
+IfStmt (76)
+    on left: 50 51, on right: 29
+ReturnStmt (77)
+    on left: 52 53, on right: 33
+BreakStmt (78)
+    on left: 54, on right: 32
+PrintStmt (79)
+    on left: 55, on right: 34
+BoolExpr (80)
+    on left: 56, on right: 48 49 50 51
+Expr (81)
+    on left: 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74
+    75 76 77 78 79 80 81, on right: 37 40 41 43 46 47 53 56 61 62 63
+    64 65 66 67 68 69 70 71 72 73 74 75 79 80 81
+Constant (82)
+    on left: 82 83 84 85 86 87 88, on right: 57
+
+
+State 0
+
+    0 $accept: . Program $end
+
+    KEYCLASS  shift, and go to state 1
+
+    Program   go to state 2
+    ClassDef  go to state 3
+
+
+State 1
+
+   18 ClassDef: KEYCLASS . IDENTIFIER SPLEFTBRACE Fields SPRIGHTBRACE
+   19         | KEYCLASS . IDENTIFIER KEYEXTENDS IDENTIFIER SPLEFTBRACE Fields SPRIGHTBRACE
+
+    IDENTIFIER  shift, and go to state 4
+
+
+State 2
+
+    0 $accept: Program . $end
+    2 Program: Program . ClassDef
+
+    $end      shift, and go to state 5
+    KEYCLASS  shift, and go to state 1
+
+    ClassDef  go to state 6
+
+
+State 3
+
+    1 Program: ClassDef .
+
+    $default  reduce using rule 1 (Program)
+
+
+State 4
+
+   18 ClassDef: KEYCLASS IDENTIFIER . SPLEFTBRACE Fields SPRIGHTBRACE
+   19         | KEYCLASS IDENTIFIER . KEYEXTENDS IDENTIFIER SPLEFTBRACE Fields SPRIGHTBRACE
+
+    SPLEFTBRACE  shift, and go to state 7
+    KEYEXTENDS   shift, and go to state 8
+
+
+State 5
+
+    0 $accept: Program $end .
+
+    $default  accept
+
+
+State 6
+
+    2 Program: Program ClassDef .
+
+    $default  reduce using rule 2 (Program)
+
+
+State 7
+
+   18 ClassDef: KEYCLASS IDENTIFIER SPLEFTBRACE . Fields SPRIGHTBRACE
+
+    $default  reduce using rule 20 (Fields)
+
+    Fields  go to state 9
+
+
+State 8
+
+   19 ClassDef: KEYCLASS IDENTIFIER KEYEXTENDS . IDENTIFIER SPLEFTBRACE Fields SPRIGHTBRACE
+
+    IDENTIFIER  shift, and go to state 10
+
+
+State 9
+
+   18 ClassDef: KEYCLASS IDENTIFIER SPLEFTBRACE Fields . SPRIGHTBRACE
+   21 Fields: Fields . Field
+
+    SPRIGHTBRACE  shift, and go to state 11
+    TYPEVOID      shift, and go to state 12
+    TYPEINTEGER   shift, and go to state 13
+    TYPEFLOAT     shift, and go to state 14
+    TYPEBOOL      shift, and go to state 15
+    TYPESTRING    shift, and go to state 16
+    KEYCLASS      shift, and go to state 17
+    KEYSTATIC     shift, and go to state 18
+
+    VariableDef  go to state 19
+    Variable     go to state 20
+    Type         go to state 21
+    FunctionDef  go to state 22
+    Field        go to state 23
+
+
+State 10
+
+   19 ClassDef: KEYCLASS IDENTIFIER KEYEXTENDS IDENTIFIER . SPLEFTBRACE Fields SPRIGHTBRACE
+
+    SPLEFTBRACE  shift, and go to state 24
+
+
+State 11
+
+   18 ClassDef: KEYCLASS IDENTIFIER SPLEFTBRACE Fields SPRIGHTBRACE .
+
+    $default  reduce using rule 18 (ClassDef)
+
+
+State 12
+
+    9 Type: TYPEVOID .
+
+    $default  reduce using rule 9 (Type)
+
+
+State 13
+
+    5 Type: TYPEINTEGER .
+
+    $default  reduce using rule 5 (Type)
+
+
+State 14
+
+    6 Type: TYPEFLOAT .
+
+    $default  reduce using rule 6 (Type)
+
+
+State 15
+
+    7 Type: TYPEBOOL .
+
+    $default  reduce using rule 7 (Type)
+
+
+State 16
+
+    8 Type: TYPESTRING .
+
+    $default  reduce using rule 8 (Type)
+
+
+State 17
+
+   10 Type: KEYCLASS . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 25
+
+
+State 18
+
+   17 FunctionDef: KEYSTATIC . Type IDENTIFIER OPLEFTPRNT Formals OPRIGHTPRNT StmtBlock
+
+    TYPEVOID     shift, and go to state 12
+    TYPEINTEGER  shift, and go to state 13
+    TYPEFLOAT    shift, and go to state 14
+    TYPEBOOL     shift, and go to state 15
+    TYPESTRING   shift, and go to state 16
+    KEYCLASS     shift, and go to state 17
+
+    Type  go to state 26
+
+
+State 19
+
+   22 Field: VariableDef .
+
+    $default  reduce using rule 22 (Field)
+
+
+State 20
+
+    3 VariableDef: Variable . SPSEMICOLON
+
+    SPSEMICOLON  shift, and go to state 27
+
+
+State 21
+
+    4 Variable: Type . IDENTIFIER
+   11 Type: Type . OPLEFTBRACKET OPRIGHTBRACKET
+   16 FunctionDef: Type . IDENTIFIER OPLEFTPRNT Formals OPRIGHTPRNT StmtBlock
+
+    OPLEFTBRACKET  shift, and go to state 28
+    IDENTIFIER     shift, and go to state 29
+
+
+State 22
+
+   23 Field: FunctionDef .
+
+    $default  reduce using rule 23 (Field)
+
+
+State 23
+
+   21 Fields: Fields Field .
+
+    $default  reduce using rule 21 (Fields)
+
+
+State 24
+
+   19 ClassDef: KEYCLASS IDENTIFIER KEYEXTENDS IDENTIFIER SPLEFTBRACE . Fields SPRIGHTBRACE
+
+    $default  reduce using rule 20 (Fields)
+
+    Fields  go to state 30
+
+
+State 25
+
+   10 Type: KEYCLASS IDENTIFIER .
+
+    $default  reduce using rule 10 (Type)
+
+
+State 26
+
+   11 Type: Type . OPLEFTBRACKET OPRIGHTBRACKET
+   17 FunctionDef: KEYSTATIC Type . IDENTIFIER OPLEFTPRNT Formals OPRIGHTPRNT StmtBlock
+
+    OPLEFTBRACKET  shift, and go to state 28
+    IDENTIFIER     shift, and go to state 31
+
+
+State 27
+
+    3 VariableDef: Variable SPSEMICOLON .
+
+    $default  reduce using rule 3 (VariableDef)
+
+
+State 28
+
+   11 Type: Type OPLEFTBRACKET . OPRIGHTBRACKET
+
+    OPRIGHTBRACKET  shift, and go to state 32
+
+
+State 29
+
+    4 Variable: Type IDENTIFIER .
+   16 FunctionDef: Type IDENTIFIER . OPLEFTPRNT Formals OPRIGHTPRNT StmtBlock
+
+    OPLEFTPRNT  shift, and go to state 33
+
+    $default  reduce using rule 4 (Variable)
+
+
+State 30
+
+   19 ClassDef: KEYCLASS IDENTIFIER KEYEXTENDS IDENTIFIER SPLEFTBRACE Fields . SPRIGHTBRACE
+   21 Fields: Fields . Field
+
+    SPRIGHTBRACE  shift, and go to state 34
+    TYPEVOID      shift, and go to state 12
+    TYPEINTEGER   shift, and go to state 13
+    TYPEFLOAT     shift, and go to state 14
+    TYPEBOOL      shift, and go to state 15
+    TYPESTRING    shift, and go to state 16
+    KEYCLASS      shift, and go to state 17
+    KEYSTATIC     shift, and go to state 18
+
+    VariableDef  go to state 19
+    Variable     go to state 20
+    Type         go to state 21
+    FunctionDef  go to state 22
+    Field        go to state 23
+
+
+State 31
+
+   17 FunctionDef: KEYSTATIC Type IDENTIFIER . OPLEFTPRNT Formals OPRIGHTPRNT StmtBlock
+
+    OPLEFTPRNT  shift, and go to state 35
+
+
+State 32
+
+   11 Type: Type OPLEFTBRACKET OPRIGHTBRACKET .
+
+    $default  reduce using rule 11 (Type)
+
+
+State 33
+
+   16 FunctionDef: Type IDENTIFIER OPLEFTPRNT . Formals OPRIGHTPRNT StmtBlock
+
+    TYPEVOID     shift, and go to state 12
+    TYPEINTEGER  shift, and go to state 13
+    TYPEFLOAT    shift, and go to state 14
+    TYPEBOOL     shift, and go to state 15
+    TYPESTRING   shift, and go to state 16
+    KEYCLASS     shift, and go to state 17
+
+    $default  reduce using rule 14 (Formals)
+
+    Variable   go to state 36
+    Type       go to state 37
+    Variables  go to state 38
+    Formals    go to state 39
+
+
+State 34
+
+   19 ClassDef: KEYCLASS IDENTIFIER KEYEXTENDS IDENTIFIER SPLEFTBRACE Fields SPRIGHTBRACE .
+
+    $default  reduce using rule 19 (ClassDef)
+
+
+State 35
+
+   17 FunctionDef: KEYSTATIC Type IDENTIFIER OPLEFTPRNT . Formals OPRIGHTPRNT StmtBlock
+
+    TYPEVOID     shift, and go to state 12
+    TYPEINTEGER  shift, and go to state 13
+    TYPEFLOAT    shift, and go to state 14
+    TYPEBOOL     shift, and go to state 15
+    TYPESTRING   shift, and go to state 16
+    KEYCLASS     shift, and go to state 17
+
+    $default  reduce using rule 14 (Formals)
+
+    Variable   go to state 36
+    Type       go to state 37
+    Variables  go to state 38
+    Formals    go to state 40
+
+
+State 36
+
+   12 Variables: Variable .
+
+    $default  reduce using rule 12 (Variables)
+
+
+State 37
+
+    4 Variable: Type . IDENTIFIER
+   11 Type: Type . OPLEFTBRACKET OPRIGHTBRACKET
+
+    OPLEFTBRACKET  shift, and go to state 28
+    IDENTIFIER     shift, and go to state 41
+
+
+State 38
+
+   13 Variables: Variables . SPCOMMA Variable
+   15 Formals: Variables .
+
+    SPCOMMA  shift, and go to state 42
+
+    $default  reduce using rule 15 (Formals)
+
+
+State 39
+
+   16 FunctionDef: Type IDENTIFIER OPLEFTPRNT Formals . OPRIGHTPRNT StmtBlock
+
+    OPRIGHTPRNT  shift, and go to state 43
+
+
+State 40
+
+   17 FunctionDef: KEYSTATIC Type IDENTIFIER OPLEFTPRNT Formals . OPRIGHTPRNT StmtBlock
+
+    OPRIGHTPRNT  shift, and go to state 44
+
+
+State 41
+
+    4 Variable: Type IDENTIFIER .
+
+    $default  reduce using rule 4 (Variable)
+
+
+State 42
+
+   13 Variables: Variables SPCOMMA . Variable
+
+    TYPEVOID     shift, and go to state 12
+    TYPEINTEGER  shift, and go to state 13
+    TYPEFLOAT    shift, and go to state 14
+    TYPEBOOL     shift, and go to state 15
+    TYPESTRING   shift, and go to state 16
+    KEYCLASS     shift, and go to state 17
+
+    Variable  go to state 45
+    Type      go to state 37
+
+
+State 43
+
+   16 FunctionDef: Type IDENTIFIER OPLEFTPRNT Formals OPRIGHTPRNT . StmtBlock
+
+    SPLEFTBRACE  shift, and go to state 46
+
+    StmtBlock  go to state 47
+
+
+State 44
+
+   17 FunctionDef: KEYSTATIC Type IDENTIFIER OPLEFTPRNT Formals OPRIGHTPRNT . StmtBlock
+
+    SPLEFTBRACE  shift, and go to state 46
+
+    StmtBlock  go to state 48
+
+
+State 45
+
+   13 Variables: Variables SPCOMMA Variable .
+
+    $default  reduce using rule 13 (Variables)
+
+
+State 46
+
+   24 StmtBlock: SPLEFTBRACE . Stmts SPRIGHTBRACE
+
+    $default  reduce using rule 25 (Stmts)
+
+    Stmts  go to state 49
+
+
+State 47
+
+   16 FunctionDef: Type IDENTIFIER OPLEFTPRNT Formals OPRIGHTPRNT StmtBlock .
+
+    $default  reduce using rule 16 (FunctionDef)
+
+
+State 48
+
+   17 FunctionDef: KEYSTATIC Type IDENTIFIER OPLEFTPRNT Formals OPRIGHTPRNT StmtBlock .
+
+    $default  reduce using rule 17 (FunctionDef)
+
+
+State 49
+
+   24 StmtBlock: SPLEFTBRACE Stmts . SPRIGHTBRACE
+   26 Stmts: Stmts . Stmt
+
+    SPLEFTBRACE      shift, and go to state 46
+    SPRIGHTBRACE     shift, and go to state 50
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    TYPEVOID         shift, and go to state 12
+    TYPEINTEGER      shift, and go to state 13
+    TYPEFLOAT        shift, and go to state 14
+    TYPEBOOL         shift, and go to state 15
+    TYPESTRING       shift, and go to state 16
+    KEYCLASS         shift, and go to state 17
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYIF            shift, and go to state 57
+    KEYFOR           shift, and go to state 58
+    KEYWHILE         shift, and go to state 59
+    KEYBREAK         shift, and go to state 60
+    KEYRETURN        shift, and go to state 61
+    KEYPRINT         shift, and go to state 62
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    $default  reduce using rule 36 (SimpleStmt)
+
+    VariableDef  go to state 73
+    Variable     go to state 20
+    Type         go to state 37
+    StmtBlock    go to state 74
+    Stmt         go to state 75
+    SimpleStmt   go to state 76
+    LValue       go to state 77
+    Call         go to state 78
+    ForStmt      go to state 79
+    WhileStmt    go to state 80
+    IfStmt       go to state 81
+    ReturnStmt   go to state 82
+    BreakStmt    go to state 83
+    PrintStmt    go to state 84
+    Expr         go to state 85
+    Constant     go to state 86
+
+
+State 50
+
+   24 StmtBlock: SPLEFTBRACE Stmts SPRIGHTBRACE .
+
+    $default  reduce using rule 24 (StmtBlock)
+
+
+State 51
+
+   61 Expr: OPLEFTPRNT . Expr OPRIGHTPRNT
+   81     | OPLEFTPRNT . KEYCLASS IDENTIFIER OPRIGHTPRNT Expr
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYCLASS         shift, and go to state 87
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 90
+    Constant  go to state 86
+
+
+State 52
+
+   66 Expr: OPMINUS . Expr
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 91
+    Constant  go to state 86
+
+
+State 53
+
+   75 Expr: OPNOT . Expr
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 92
+    Constant  go to state 86
+
+
+State 54
+
+   78 Expr: KEYNEW . IDENTIFIER OPLEFTPRNT OPRIGHTPRNT
+   79     | KEYNEW . Type OPLEFTBRACKET Expr OPRIGHTBRACKET
+
+    TYPEVOID     shift, and go to state 12
+    TYPEINTEGER  shift, and go to state 13
+    TYPEFLOAT    shift, and go to state 14
+    TYPEBOOL     shift, and go to state 15
+    TYPESTRING   shift, and go to state 16
+    KEYCLASS     shift, and go to state 17
+    IDENTIFIER   shift, and go to state 93
+
+    Type  go to state 94
+
+
+State 55
+
+   59 Expr: KEYTHIS .
+
+    $default  reduce using rule 59 (Expr)
+
+
+State 56
+
+   80 Expr: KEYINSTANCEOF . OPLEFTPRNT Expr SPCOMMA IDENTIFIER OPRIGHTPRNT
+
+    OPLEFTPRNT  shift, and go to state 95
+
+
+State 57
+
+   50 IfStmt: KEYIF . OPLEFTPRNT BoolExpr OPRIGHTPRNT Stmt
+   51       | KEYIF . OPLEFTPRNT BoolExpr OPRIGHTPRNT Stmt KEYELSE Stmt
+
+    OPLEFTPRNT  shift, and go to state 96
+
+
+State 58
+
+   48 ForStmt: KEYFOR . OPLEFTPRNT SimpleStmt SPSEMICOLON BoolExpr SPSEMICOLON SimpleStmt OPRIGHTPRNT Stmt
+
+    OPLEFTPRNT  shift, and go to state 97
+
+
+State 59
+
+   49 WhileStmt: KEYWHILE . OPLEFTPRNT BoolExpr OPRIGHTPRNT Stmt
+
+    OPLEFTPRNT  shift, and go to state 98
+
+
+State 60
+
+   54 BreakStmt: KEYBREAK .
+
+    $default  reduce using rule 54 (BreakStmt)
+
+
+State 61
+
+   52 ReturnStmt: KEYRETURN .
+   53           | KEYRETURN . Expr
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    $default  reduce using rule 52 (ReturnStmt)
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 99
+    Constant  go to state 86
+
+
+State 62
+
+   55 PrintStmt: KEYPRINT . OPLEFTPRNT Exprs OPRIGHTPRNT
+
+    OPLEFTPRNT  shift, and go to state 100
+
+
+State 63
+
+   76 Expr: KEYREADINTEGER . OPLEFTPRNT OPRIGHTPRNT
+
+    OPLEFTPRNT  shift, and go to state 101
+
+
+State 64
+
+   77 Expr: KEYREADLINE . OPLEFTPRNT OPRIGHTPRNT
+
+    OPLEFTPRNT  shift, and go to state 102
+
+
+State 65
+
+   88 Constant: CONSTANTNULL .
+
+    $default  reduce using rule 88 (Constant)
+
+
+State 66
+
+   86 Constant: CONSTANTBOOL .
+
+    $default  reduce using rule 86 (Constant)
+
+
+State 67
+
+   82 Constant: CONSTANTINTD .
+
+    $default  reduce using rule 82 (Constant)
+
+
+State 68
+
+   83 Constant: CONSTANTINTH .
+
+    $default  reduce using rule 83 (Constant)
+
+
+State 69
+
+   84 Constant: CONSTANTFLOAT .
+
+    $default  reduce using rule 84 (Constant)
+
+
+State 70
+
+   85 Constant: CONSTANTFLOATSC .
+
+    $default  reduce using rule 85 (Constant)
+
+
+State 71
+
+   87 Constant: CONSTANTSTRING .
+
+    $default  reduce using rule 87 (Constant)
+
+
+State 72
+
+   39 LValue: IDENTIFIER .
+   42 Call: IDENTIFIER . OPLEFTPRNT Actuals OPRIGHTPRNT
+
+    OPLEFTPRNT  shift, and go to state 103
+
+    $default  reduce using rule 39 (LValue)
+
+
+State 73
+
+   27 Stmt: VariableDef .
+
+    $default  reduce using rule 27 (Stmt)
+
+
+State 74
+
+   35 Stmt: StmtBlock .
+
+    $default  reduce using rule 35 (Stmt)
+
+
+State 75
+
+   26 Stmts: Stmts Stmt .
+
+    $default  reduce using rule 26 (Stmts)
+
+
+State 76
+
+   28 Stmt: SimpleStmt . SPSEMICOLON
+
+    SPSEMICOLON  shift, and go to state 104
+
+
+State 77
+
+   37 SimpleStmt: LValue . OPASSIGN Expr
+   58 Expr: LValue .
+
+    OPASSIGN  shift, and go to state 105
+
+    $default  reduce using rule 58 (Expr)
+
+
+State 78
+
+   38 SimpleStmt: Call .
+   60 Expr: Call .
+
+    SPSEMICOLON  reduce using rule 38 (SimpleStmt)
+    OPRIGHTPRNT  reduce using rule 38 (SimpleStmt)
+    $default     reduce using rule 60 (Expr)
+
+
+State 79
+
+   31 Stmt: ForStmt .
+
+    $default  reduce using rule 31 (Stmt)
+
+
+State 80
+
+   30 Stmt: WhileStmt .
+
+    $default  reduce using rule 30 (Stmt)
+
+
+State 81
+
+   29 Stmt: IfStmt .
+
+    $default  reduce using rule 29 (Stmt)
+
+
+State 82
+
+   33 Stmt: ReturnStmt . SPSEMICOLON
+
+    SPSEMICOLON  shift, and go to state 106
+
+
+State 83
+
+   32 Stmt: BreakStmt . SPSEMICOLON
+
+    SPSEMICOLON  shift, and go to state 107
+
+
+State 84
+
+   34 Stmt: PrintStmt . SPSEMICOLON
+
+    SPSEMICOLON  shift, and go to state 108
+
+
+State 85
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+
+    SPDOT          shift, and go to state 109
+    OPLEFTBRACKET  shift, and go to state 110
+    OPPLUS         shift, and go to state 111
+    OPMINUS        shift, and go to state 112
+    OPMULTIPLY     shift, and go to state 113
+    OPDIVIDE       shift, and go to state 114
+    OPAND          shift, and go to state 115
+    OPOR           shift, and go to state 116
+    OPEQUAL        shift, and go to state 117
+    OPNOTEQUAL     shift, and go to state 118
+    OPGREAT        shift, and go to state 119
+    OPLIGHT        shift, and go to state 120
+    OPGREATEQ      shift, and go to state 121
+    OPLIGHTEQ      shift, and go to state 122
+
+
+State 86
+
+   57 Expr: Constant .
+
+    $default  reduce using rule 57 (Expr)
+
+
+State 87
+
+   81 Expr: OPLEFTPRNT KEYCLASS . IDENTIFIER OPRIGHTPRNT Expr
+
+    IDENTIFIER  shift, and go to state 123
+
+
+State 88
+
+   58 Expr: LValue .
+
+    $default  reduce using rule 58 (Expr)
+
+
+State 89
+
+   60 Expr: Call .
+
+    $default  reduce using rule 60 (Expr)
+
+
+State 90
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   61 Expr: OPLEFTPRNT Expr . OPRIGHTPRNT
+   62     | Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+
+    SPDOT          shift, and go to state 109
+    OPRIGHTPRNT    shift, and go to state 124
+    OPLEFTBRACKET  shift, and go to state 110
+    OPPLUS         shift, and go to state 111
+    OPMINUS        shift, and go to state 112
+    OPMULTIPLY     shift, and go to state 113
+    OPDIVIDE       shift, and go to state 114
+    OPAND          shift, and go to state 115
+    OPOR           shift, and go to state 116
+    OPEQUAL        shift, and go to state 117
+    OPNOTEQUAL     shift, and go to state 118
+    OPGREAT        shift, and go to state 119
+    OPLIGHT        shift, and go to state 120
+    OPGREATEQ      shift, and go to state 121
+    OPLIGHTEQ      shift, and go to state 122
+
+
+State 91
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   66     | OPMINUS Expr .
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+
+    SPDOT          shift, and go to state 109
+    OPLEFTBRACKET  shift, and go to state 110
+    OPMULTIPLY     shift, and go to state 113
+    OPDIVIDE       shift, and go to state 114
+
+    $default  reduce using rule 66 (Expr)
+
+
+State 92
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+   75     | OPNOT Expr .
+
+    SPDOT          shift, and go to state 109
+    OPLEFTBRACKET  shift, and go to state 110
+
+    $default  reduce using rule 75 (Expr)
+
+
+State 93
+
+   78 Expr: KEYNEW IDENTIFIER . OPLEFTPRNT OPRIGHTPRNT
+
+    OPLEFTPRNT  shift, and go to state 125
+
+
+State 94
+
+   11 Type: Type . OPLEFTBRACKET OPRIGHTBRACKET
+   79 Expr: KEYNEW Type . OPLEFTBRACKET Expr OPRIGHTBRACKET
+
+    OPLEFTBRACKET  shift, and go to state 126
+
+
+State 95
+
+   80 Expr: KEYINSTANCEOF OPLEFTPRNT . Expr SPCOMMA IDENTIFIER OPRIGHTPRNT
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 127
+    Constant  go to state 86
+
+
+State 96
+
+   50 IfStmt: KEYIF OPLEFTPRNT . BoolExpr OPRIGHTPRNT Stmt
+   51       | KEYIF OPLEFTPRNT . BoolExpr OPRIGHTPRNT Stmt KEYELSE Stmt
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    BoolExpr  go to state 128
+    Expr      go to state 129
+    Constant  go to state 86
+
+
+State 97
+
+   48 ForStmt: KEYFOR OPLEFTPRNT . SimpleStmt SPSEMICOLON BoolExpr SPSEMICOLON SimpleStmt OPRIGHTPRNT Stmt
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    $default  reduce using rule 36 (SimpleStmt)
+
+    SimpleStmt  go to state 130
+    LValue      go to state 77
+    Call        go to state 78
+    Expr        go to state 85
+    Constant    go to state 86
+
+
+State 98
+
+   49 WhileStmt: KEYWHILE OPLEFTPRNT . BoolExpr OPRIGHTPRNT Stmt
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    BoolExpr  go to state 131
+    Expr      go to state 129
+    Constant  go to state 86
+
+
+State 99
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   53 ReturnStmt: KEYRETURN Expr .
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+
+    SPDOT          shift, and go to state 109
+    OPLEFTBRACKET  shift, and go to state 110
+    OPPLUS         shift, and go to state 111
+    OPMINUS        shift, and go to state 112
+    OPMULTIPLY     shift, and go to state 113
+    OPDIVIDE       shift, and go to state 114
+    OPAND          shift, and go to state 115
+    OPOR           shift, and go to state 116
+    OPEQUAL        shift, and go to state 117
+    OPNOTEQUAL     shift, and go to state 118
+    OPGREAT        shift, and go to state 119
+    OPLIGHT        shift, and go to state 120
+    OPGREATEQ      shift, and go to state 121
+    OPLIGHTEQ      shift, and go to state 122
+
+    $default  reduce using rule 53 (ReturnStmt)
+
+
+State 100
+
+   55 PrintStmt: KEYPRINT OPLEFTPRNT . Exprs OPRIGHTPRNT
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Exprs     go to state 132
+    Expr      go to state 133
+    Constant  go to state 86
+
+
+State 101
+
+   76 Expr: KEYREADINTEGER OPLEFTPRNT . OPRIGHTPRNT
+
+    OPRIGHTPRNT  shift, and go to state 134
+
+
+State 102
+
+   77 Expr: KEYREADLINE OPLEFTPRNT . OPRIGHTPRNT
+
+    OPRIGHTPRNT  shift, and go to state 135
+
+
+State 103
+
+   42 Call: IDENTIFIER OPLEFTPRNT . Actuals OPRIGHTPRNT
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    $default  reduce using rule 44 (Actuals)
+
+    LValue    go to state 88
+    Call      go to state 89
+    Actuals   go to state 136
+    Exprs     go to state 137
+    Expr      go to state 133
+    Constant  go to state 86
+
+
+State 104
+
+   28 Stmt: SimpleStmt SPSEMICOLON .
+
+    $default  reduce using rule 28 (Stmt)
+
+
+State 105
+
+   37 SimpleStmt: LValue OPASSIGN . Expr
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 138
+    Constant  go to state 86
+
+
+State 106
+
+   33 Stmt: ReturnStmt SPSEMICOLON .
+
+    $default  reduce using rule 33 (Stmt)
+
+
+State 107
+
+   32 Stmt: BreakStmt SPSEMICOLON .
+
+    $default  reduce using rule 32 (Stmt)
+
+
+State 108
+
+   34 Stmt: PrintStmt SPSEMICOLON .
+
+    $default  reduce using rule 34 (Stmt)
+
+
+State 109
+
+   40 LValue: Expr SPDOT . IDENTIFIER
+   43 Call: Expr SPDOT . IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+
+    IDENTIFIER  shift, and go to state 139
+
+
+State 110
+
+   41 LValue: Expr OPLEFTBRACKET . Expr OPRIGHTBRACKET
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 140
+    Constant  go to state 86
+
+
+State 111
+
+   62 Expr: Expr OPPLUS . Expr
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 141
+    Constant  go to state 86
+
+
+State 112
+
+   63 Expr: Expr OPMINUS . Expr
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 142
+    Constant  go to state 86
+
+
+State 113
+
+   64 Expr: Expr OPMULTIPLY . Expr
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 143
+    Constant  go to state 86
+
+
+State 114
+
+   65 Expr: Expr OPDIVIDE . Expr
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 144
+    Constant  go to state 86
+
+
+State 115
+
+   73 Expr: Expr OPAND . Expr
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 145
+    Constant  go to state 86
+
+
+State 116
+
+   74 Expr: Expr OPOR . Expr
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 146
+    Constant  go to state 86
+
+
+State 117
+
+   71 Expr: Expr OPEQUAL . Expr
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 147
+    Constant  go to state 86
+
+
+State 118
+
+   72 Expr: Expr OPNOTEQUAL . Expr
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 148
+    Constant  go to state 86
+
+
+State 119
+
+   69 Expr: Expr OPGREAT . Expr
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 149
+    Constant  go to state 86
+
+
+State 120
+
+   67 Expr: Expr OPLIGHT . Expr
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 150
+    Constant  go to state 86
+
+
+State 121
+
+   70 Expr: Expr OPGREATEQ . Expr
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 151
+    Constant  go to state 86
+
+
+State 122
+
+   68 Expr: Expr OPLIGHTEQ . Expr
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 152
+    Constant  go to state 86
+
+
+State 123
+
+   81 Expr: OPLEFTPRNT KEYCLASS IDENTIFIER . OPRIGHTPRNT Expr
+
+    OPRIGHTPRNT  shift, and go to state 153
+
+
+State 124
+
+   61 Expr: OPLEFTPRNT Expr OPRIGHTPRNT .
+
+    $default  reduce using rule 61 (Expr)
+
+
+State 125
+
+   78 Expr: KEYNEW IDENTIFIER OPLEFTPRNT . OPRIGHTPRNT
+
+    OPRIGHTPRNT  shift, and go to state 154
+
+
+State 126
+
+   11 Type: Type OPLEFTBRACKET . OPRIGHTBRACKET
+   79 Expr: KEYNEW Type OPLEFTBRACKET . Expr OPRIGHTBRACKET
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPRIGHTBRACKET   shift, and go to state 32
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 155
+    Constant  go to state 86
+
+
+State 127
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+   80     | KEYINSTANCEOF OPLEFTPRNT Expr . SPCOMMA IDENTIFIER OPRIGHTPRNT
+
+    SPCOMMA        shift, and go to state 156
+    SPDOT          shift, and go to state 109
+    OPLEFTBRACKET  shift, and go to state 110
+    OPPLUS         shift, and go to state 111
+    OPMINUS        shift, and go to state 112
+    OPMULTIPLY     shift, and go to state 113
+    OPDIVIDE       shift, and go to state 114
+    OPAND          shift, and go to state 115
+    OPOR           shift, and go to state 116
+    OPEQUAL        shift, and go to state 117
+    OPNOTEQUAL     shift, and go to state 118
+    OPGREAT        shift, and go to state 119
+    OPLIGHT        shift, and go to state 120
+    OPGREATEQ      shift, and go to state 121
+    OPLIGHTEQ      shift, and go to state 122
+
+
+State 128
+
+   50 IfStmt: KEYIF OPLEFTPRNT BoolExpr . OPRIGHTPRNT Stmt
+   51       | KEYIF OPLEFTPRNT BoolExpr . OPRIGHTPRNT Stmt KEYELSE Stmt
+
+    OPRIGHTPRNT  shift, and go to state 157
+
+
+State 129
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   56 BoolExpr: Expr .
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+
+    SPDOT          shift, and go to state 109
+    OPLEFTBRACKET  shift, and go to state 110
+    OPPLUS         shift, and go to state 111
+    OPMINUS        shift, and go to state 112
+    OPMULTIPLY     shift, and go to state 113
+    OPDIVIDE       shift, and go to state 114
+    OPAND          shift, and go to state 115
+    OPOR           shift, and go to state 116
+    OPEQUAL        shift, and go to state 117
+    OPNOTEQUAL     shift, and go to state 118
+    OPGREAT        shift, and go to state 119
+    OPLIGHT        shift, and go to state 120
+    OPGREATEQ      shift, and go to state 121
+    OPLIGHTEQ      shift, and go to state 122
+
+    $default  reduce using rule 56 (BoolExpr)
+
+
+State 130
+
+   48 ForStmt: KEYFOR OPLEFTPRNT SimpleStmt . SPSEMICOLON BoolExpr SPSEMICOLON SimpleStmt OPRIGHTPRNT Stmt
+
+    SPSEMICOLON  shift, and go to state 158
+
+
+State 131
+
+   49 WhileStmt: KEYWHILE OPLEFTPRNT BoolExpr . OPRIGHTPRNT Stmt
+
+    OPRIGHTPRNT  shift, and go to state 159
+
+
+State 132
+
+   47 Exprs: Exprs . SPCOMMA Expr
+   55 PrintStmt: KEYPRINT OPLEFTPRNT Exprs . OPRIGHTPRNT
+
+    SPCOMMA      shift, and go to state 160
+    OPRIGHTPRNT  shift, and go to state 161
+
+
+State 133
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   46 Exprs: Expr .
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+
+    SPDOT          shift, and go to state 109
+    OPLEFTBRACKET  shift, and go to state 110
+    OPPLUS         shift, and go to state 111
+    OPMINUS        shift, and go to state 112
+    OPMULTIPLY     shift, and go to state 113
+    OPDIVIDE       shift, and go to state 114
+    OPAND          shift, and go to state 115
+    OPOR           shift, and go to state 116
+    OPEQUAL        shift, and go to state 117
+    OPNOTEQUAL     shift, and go to state 118
+    OPGREAT        shift, and go to state 119
+    OPLIGHT        shift, and go to state 120
+    OPGREATEQ      shift, and go to state 121
+    OPLIGHTEQ      shift, and go to state 122
+
+    $default  reduce using rule 46 (Exprs)
+
+
+State 134
+
+   76 Expr: KEYREADINTEGER OPLEFTPRNT OPRIGHTPRNT .
+
+    $default  reduce using rule 76 (Expr)
+
+
+State 135
+
+   77 Expr: KEYREADLINE OPLEFTPRNT OPRIGHTPRNT .
+
+    $default  reduce using rule 77 (Expr)
+
+
+State 136
+
+   42 Call: IDENTIFIER OPLEFTPRNT Actuals . OPRIGHTPRNT
+
+    OPRIGHTPRNT  shift, and go to state 162
+
+
+State 137
+
+   45 Actuals: Exprs .
+   47 Exprs: Exprs . SPCOMMA Expr
+
+    SPCOMMA  shift, and go to state 160
+
+    $default  reduce using rule 45 (Actuals)
+
+
+State 138
+
+   37 SimpleStmt: LValue OPASSIGN Expr .
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+
+    SPDOT          shift, and go to state 109
+    OPLEFTBRACKET  shift, and go to state 110
+    OPPLUS         shift, and go to state 111
+    OPMINUS        shift, and go to state 112
+    OPMULTIPLY     shift, and go to state 113
+    OPDIVIDE       shift, and go to state 114
+    OPAND          shift, and go to state 115
+    OPOR           shift, and go to state 116
+    OPEQUAL        shift, and go to state 117
+    OPNOTEQUAL     shift, and go to state 118
+    OPGREAT        shift, and go to state 119
+    OPLIGHT        shift, and go to state 120
+    OPGREATEQ      shift, and go to state 121
+    OPLIGHTEQ      shift, and go to state 122
+
+    $default  reduce using rule 37 (SimpleStmt)
+
+
+State 139
+
+   40 LValue: Expr SPDOT IDENTIFIER .
+   43 Call: Expr SPDOT IDENTIFIER . OPLEFTPRNT Actuals OPRIGHTPRNT
+
+    OPLEFTPRNT  shift, and go to state 163
+
+    $default  reduce using rule 40 (LValue)
+
+
+State 140
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   41       | Expr OPLEFTBRACKET Expr . OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+
+    SPDOT           shift, and go to state 109
+    OPLEFTBRACKET   shift, and go to state 110
+    OPRIGHTBRACKET  shift, and go to state 164
+    OPPLUS          shift, and go to state 111
+    OPMINUS         shift, and go to state 112
+    OPMULTIPLY      shift, and go to state 113
+    OPDIVIDE        shift, and go to state 114
+    OPAND           shift, and go to state 115
+    OPOR            shift, and go to state 116
+    OPEQUAL         shift, and go to state 117
+    OPNOTEQUAL      shift, and go to state 118
+    OPGREAT         shift, and go to state 119
+    OPLIGHT         shift, and go to state 120
+    OPGREATEQ       shift, and go to state 121
+    OPLIGHTEQ       shift, and go to state 122
+
+
+State 141
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   62 Expr: Expr . OPPLUS Expr
+   62     | Expr OPPLUS Expr .
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+
+    SPDOT          shift, and go to state 109
+    OPLEFTBRACKET  shift, and go to state 110
+    OPMULTIPLY     shift, and go to state 113
+    OPDIVIDE       shift, and go to state 114
+
+    $default  reduce using rule 62 (Expr)
+
+
+State 142
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   63     | Expr OPMINUS Expr .
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+
+    SPDOT          shift, and go to state 109
+    OPLEFTBRACKET  shift, and go to state 110
+    OPMULTIPLY     shift, and go to state 113
+    OPDIVIDE       shift, and go to state 114
+
+    $default  reduce using rule 63 (Expr)
+
+
+State 143
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   64     | Expr OPMULTIPLY Expr .
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+
+    SPDOT          shift, and go to state 109
+    OPLEFTBRACKET  shift, and go to state 110
+
+    $default  reduce using rule 64 (Expr)
+
+
+State 144
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   65     | Expr OPDIVIDE Expr .
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+
+    SPDOT          shift, and go to state 109
+    OPLEFTBRACKET  shift, and go to state 110
+
+    $default  reduce using rule 65 (Expr)
+
+
+State 145
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   73     | Expr OPAND Expr .
+   74     | Expr . OPOR Expr
+
+    SPDOT          shift, and go to state 109
+    OPLEFTBRACKET  shift, and go to state 110
+    OPPLUS         shift, and go to state 111
+    OPMINUS        shift, and go to state 112
+    OPMULTIPLY     shift, and go to state 113
+    OPDIVIDE       shift, and go to state 114
+    OPEQUAL        shift, and go to state 117
+    OPNOTEQUAL     shift, and go to state 118
+    OPGREAT        shift, and go to state 119
+    OPLIGHT        shift, and go to state 120
+    OPGREATEQ      shift, and go to state 121
+    OPLIGHTEQ      shift, and go to state 122
+
+    $default  reduce using rule 73 (Expr)
+
+
+State 146
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+   74     | Expr OPOR Expr .
+
+    SPDOT          shift, and go to state 109
+    OPLEFTBRACKET  shift, and go to state 110
+    OPPLUS         shift, and go to state 111
+    OPMINUS        shift, and go to state 112
+    OPMULTIPLY     shift, and go to state 113
+    OPDIVIDE       shift, and go to state 114
+    OPAND          shift, and go to state 115
+    OPEQUAL        shift, and go to state 117
+    OPNOTEQUAL     shift, and go to state 118
+    OPGREAT        shift, and go to state 119
+    OPLIGHT        shift, and go to state 120
+    OPGREATEQ      shift, and go to state 121
+    OPLIGHTEQ      shift, and go to state 122
+
+    $default  reduce using rule 74 (Expr)
+
+
+State 147
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   71     | Expr OPEQUAL Expr .
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+
+    SPDOT          shift, and go to state 109
+    OPLEFTBRACKET  shift, and go to state 110
+    OPPLUS         shift, and go to state 111
+    OPMINUS        shift, and go to state 112
+    OPMULTIPLY     shift, and go to state 113
+    OPDIVIDE       shift, and go to state 114
+
+    $default  reduce using rule 71 (Expr)
+
+
+State 148
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   72     | Expr OPNOTEQUAL Expr .
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+
+    SPDOT          shift, and go to state 109
+    OPLEFTBRACKET  shift, and go to state 110
+    OPPLUS         shift, and go to state 111
+    OPMINUS        shift, and go to state 112
+    OPMULTIPLY     shift, and go to state 113
+    OPDIVIDE       shift, and go to state 114
+
+    $default  reduce using rule 72 (Expr)
+
+
+State 149
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   69     | Expr OPGREAT Expr .
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+
+    SPDOT          shift, and go to state 109
+    OPLEFTBRACKET  shift, and go to state 110
+    OPPLUS         shift, and go to state 111
+    OPMINUS        shift, and go to state 112
+    OPMULTIPLY     shift, and go to state 113
+    OPDIVIDE       shift, and go to state 114
+
+    $default  reduce using rule 69 (Expr)
+
+
+State 150
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   67     | Expr OPLIGHT Expr .
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+
+    SPDOT          shift, and go to state 109
+    OPLEFTBRACKET  shift, and go to state 110
+    OPPLUS         shift, and go to state 111
+    OPMINUS        shift, and go to state 112
+    OPMULTIPLY     shift, and go to state 113
+    OPDIVIDE       shift, and go to state 114
+
+    $default  reduce using rule 67 (Expr)
+
+
+State 151
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   70     | Expr OPGREATEQ Expr .
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+
+    SPDOT          shift, and go to state 109
+    OPLEFTBRACKET  shift, and go to state 110
+    OPPLUS         shift, and go to state 111
+    OPMINUS        shift, and go to state 112
+    OPMULTIPLY     shift, and go to state 113
+    OPDIVIDE       shift, and go to state 114
+
+    $default  reduce using rule 70 (Expr)
+
+
+State 152
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   68     | Expr OPLIGHTEQ Expr .
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+
+    SPDOT          shift, and go to state 109
+    OPLEFTBRACKET  shift, and go to state 110
+    OPPLUS         shift, and go to state 111
+    OPMINUS        shift, and go to state 112
+    OPMULTIPLY     shift, and go to state 113
+    OPDIVIDE       shift, and go to state 114
+
+    $default  reduce using rule 68 (Expr)
+
+
+State 153
+
+   81 Expr: OPLEFTPRNT KEYCLASS IDENTIFIER OPRIGHTPRNT . Expr
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 165
+    Constant  go to state 86
+
+
+State 154
+
+   78 Expr: KEYNEW IDENTIFIER OPLEFTPRNT OPRIGHTPRNT .
+
+    $default  reduce using rule 78 (Expr)
+
+
+State 155
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+   79     | KEYNEW Type OPLEFTBRACKET Expr . OPRIGHTBRACKET
+
+    SPDOT           shift, and go to state 109
+    OPLEFTBRACKET   shift, and go to state 110
+    OPRIGHTBRACKET  shift, and go to state 166
+    OPPLUS          shift, and go to state 111
+    OPMINUS         shift, and go to state 112
+    OPMULTIPLY      shift, and go to state 113
+    OPDIVIDE        shift, and go to state 114
+    OPAND           shift, and go to state 115
+    OPOR            shift, and go to state 116
+    OPEQUAL         shift, and go to state 117
+    OPNOTEQUAL      shift, and go to state 118
+    OPGREAT         shift, and go to state 119
+    OPLIGHT         shift, and go to state 120
+    OPGREATEQ       shift, and go to state 121
+    OPLIGHTEQ       shift, and go to state 122
+
+
+State 156
+
+   80 Expr: KEYINSTANCEOF OPLEFTPRNT Expr SPCOMMA . IDENTIFIER OPRIGHTPRNT
+
+    IDENTIFIER  shift, and go to state 167
+
+
+State 157
+
+   50 IfStmt: KEYIF OPLEFTPRNT BoolExpr OPRIGHTPRNT . Stmt
+   51       | KEYIF OPLEFTPRNT BoolExpr OPRIGHTPRNT . Stmt KEYELSE Stmt
+
+    SPLEFTBRACE      shift, and go to state 46
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    TYPEVOID         shift, and go to state 12
+    TYPEINTEGER      shift, and go to state 13
+    TYPEFLOAT        shift, and go to state 14
+    TYPEBOOL         shift, and go to state 15
+    TYPESTRING       shift, and go to state 16
+    KEYCLASS         shift, and go to state 17
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYIF            shift, and go to state 57
+    KEYFOR           shift, and go to state 58
+    KEYWHILE         shift, and go to state 59
+    KEYBREAK         shift, and go to state 60
+    KEYRETURN        shift, and go to state 61
+    KEYPRINT         shift, and go to state 62
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    $default  reduce using rule 36 (SimpleStmt)
+
+    VariableDef  go to state 73
+    Variable     go to state 20
+    Type         go to state 37
+    StmtBlock    go to state 74
+    Stmt         go to state 168
+    SimpleStmt   go to state 76
+    LValue       go to state 77
+    Call         go to state 78
+    ForStmt      go to state 79
+    WhileStmt    go to state 80
+    IfStmt       go to state 81
+    ReturnStmt   go to state 82
+    BreakStmt    go to state 83
+    PrintStmt    go to state 84
+    Expr         go to state 85
+    Constant     go to state 86
+
+
+State 158
+
+   48 ForStmt: KEYFOR OPLEFTPRNT SimpleStmt SPSEMICOLON . BoolExpr SPSEMICOLON SimpleStmt OPRIGHTPRNT Stmt
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    BoolExpr  go to state 169
+    Expr      go to state 129
+    Constant  go to state 86
+
+
+State 159
+
+   49 WhileStmt: KEYWHILE OPLEFTPRNT BoolExpr OPRIGHTPRNT . Stmt
+
+    SPLEFTBRACE      shift, and go to state 46
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    TYPEVOID         shift, and go to state 12
+    TYPEINTEGER      shift, and go to state 13
+    TYPEFLOAT        shift, and go to state 14
+    TYPEBOOL         shift, and go to state 15
+    TYPESTRING       shift, and go to state 16
+    KEYCLASS         shift, and go to state 17
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYIF            shift, and go to state 57
+    KEYFOR           shift, and go to state 58
+    KEYWHILE         shift, and go to state 59
+    KEYBREAK         shift, and go to state 60
+    KEYRETURN        shift, and go to state 61
+    KEYPRINT         shift, and go to state 62
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    $default  reduce using rule 36 (SimpleStmt)
+
+    VariableDef  go to state 73
+    Variable     go to state 20
+    Type         go to state 37
+    StmtBlock    go to state 74
+    Stmt         go to state 170
+    SimpleStmt   go to state 76
+    LValue       go to state 77
+    Call         go to state 78
+    ForStmt      go to state 79
+    WhileStmt    go to state 80
+    IfStmt       go to state 81
+    ReturnStmt   go to state 82
+    BreakStmt    go to state 83
+    PrintStmt    go to state 84
+    Expr         go to state 85
+    Constant     go to state 86
+
+
+State 160
+
+   47 Exprs: Exprs SPCOMMA . Expr
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    LValue    go to state 88
+    Call      go to state 89
+    Expr      go to state 171
+    Constant  go to state 86
+
+
+State 161
+
+   55 PrintStmt: KEYPRINT OPLEFTPRNT Exprs OPRIGHTPRNT .
+
+    $default  reduce using rule 55 (PrintStmt)
+
+
+State 162
+
+   42 Call: IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT .
+
+    $default  reduce using rule 42 (Call)
+
+
+State 163
+
+   43 Call: Expr SPDOT IDENTIFIER OPLEFTPRNT . Actuals OPRIGHTPRNT
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    $default  reduce using rule 44 (Actuals)
+
+    LValue    go to state 88
+    Call      go to state 89
+    Actuals   go to state 172
+    Exprs     go to state 137
+    Expr      go to state 133
+    Constant  go to state 86
+
+
+State 164
+
+   41 LValue: Expr OPLEFTBRACKET Expr OPRIGHTBRACKET .
+
+    $default  reduce using rule 41 (LValue)
+
+
+State 165
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+   81     | OPLEFTPRNT KEYCLASS IDENTIFIER OPRIGHTPRNT Expr .
+
+    $default  reduce using rule 81 (Expr)
+
+
+State 166
+
+   79 Expr: KEYNEW Type OPLEFTBRACKET Expr OPRIGHTBRACKET .
+
+    $default  reduce using rule 79 (Expr)
+
+
+State 167
+
+   80 Expr: KEYINSTANCEOF OPLEFTPRNT Expr SPCOMMA IDENTIFIER . OPRIGHTPRNT
+
+    OPRIGHTPRNT  shift, and go to state 173
+
+
+State 168
+
+   50 IfStmt: KEYIF OPLEFTPRNT BoolExpr OPRIGHTPRNT Stmt .
+   51       | KEYIF OPLEFTPRNT BoolExpr OPRIGHTPRNT Stmt . KEYELSE Stmt
+
+    KEYELSE  shift, and go to state 174
+
+    $default  reduce using rule 50 (IfStmt)
+
+
+State 169
+
+   48 ForStmt: KEYFOR OPLEFTPRNT SimpleStmt SPSEMICOLON BoolExpr . SPSEMICOLON SimpleStmt OPRIGHTPRNT Stmt
+
+    SPSEMICOLON  shift, and go to state 175
+
+
+State 170
+
+   49 WhileStmt: KEYWHILE OPLEFTPRNT BoolExpr OPRIGHTPRNT Stmt .
+
+    $default  reduce using rule 49 (WhileStmt)
+
+
+State 171
+
+   40 LValue: Expr . SPDOT IDENTIFIER
+   41       | Expr . OPLEFTBRACKET Expr OPRIGHTBRACKET
+   43 Call: Expr . SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT
+   47 Exprs: Exprs SPCOMMA Expr .
+   62 Expr: Expr . OPPLUS Expr
+   63     | Expr . OPMINUS Expr
+   64     | Expr . OPMULTIPLY Expr
+   65     | Expr . OPDIVIDE Expr
+   67     | Expr . OPLIGHT Expr
+   68     | Expr . OPLIGHTEQ Expr
+   69     | Expr . OPGREAT Expr
+   70     | Expr . OPGREATEQ Expr
+   71     | Expr . OPEQUAL Expr
+   72     | Expr . OPNOTEQUAL Expr
+   73     | Expr . OPAND Expr
+   74     | Expr . OPOR Expr
+
+    SPDOT          shift, and go to state 109
+    OPLEFTBRACKET  shift, and go to state 110
+    OPPLUS         shift, and go to state 111
+    OPMINUS        shift, and go to state 112
+    OPMULTIPLY     shift, and go to state 113
+    OPDIVIDE       shift, and go to state 114
+    OPAND          shift, and go to state 115
+    OPOR           shift, and go to state 116
+    OPEQUAL        shift, and go to state 117
+    OPNOTEQUAL     shift, and go to state 118
+    OPGREAT        shift, and go to state 119
+    OPLIGHT        shift, and go to state 120
+    OPGREATEQ      shift, and go to state 121
+    OPLIGHTEQ      shift, and go to state 122
+
+    $default  reduce using rule 47 (Exprs)
+
+
+State 172
+
+   43 Call: Expr SPDOT IDENTIFIER OPLEFTPRNT Actuals . OPRIGHTPRNT
+
+    OPRIGHTPRNT  shift, and go to state 176
+
+
+State 173
+
+   80 Expr: KEYINSTANCEOF OPLEFTPRNT Expr SPCOMMA IDENTIFIER OPRIGHTPRNT .
+
+    $default  reduce using rule 80 (Expr)
+
+
+State 174
+
+   51 IfStmt: KEYIF OPLEFTPRNT BoolExpr OPRIGHTPRNT Stmt KEYELSE . Stmt
+
+    SPLEFTBRACE      shift, and go to state 46
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    TYPEVOID         shift, and go to state 12
+    TYPEINTEGER      shift, and go to state 13
+    TYPEFLOAT        shift, and go to state 14
+    TYPEBOOL         shift, and go to state 15
+    TYPESTRING       shift, and go to state 16
+    KEYCLASS         shift, and go to state 17
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYIF            shift, and go to state 57
+    KEYFOR           shift, and go to state 58
+    KEYWHILE         shift, and go to state 59
+    KEYBREAK         shift, and go to state 60
+    KEYRETURN        shift, and go to state 61
+    KEYPRINT         shift, and go to state 62
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    $default  reduce using rule 36 (SimpleStmt)
+
+    VariableDef  go to state 73
+    Variable     go to state 20
+    Type         go to state 37
+    StmtBlock    go to state 74
+    Stmt         go to state 177
+    SimpleStmt   go to state 76
+    LValue       go to state 77
+    Call         go to state 78
+    ForStmt      go to state 79
+    WhileStmt    go to state 80
+    IfStmt       go to state 81
+    ReturnStmt   go to state 82
+    BreakStmt    go to state 83
+    PrintStmt    go to state 84
+    Expr         go to state 85
+    Constant     go to state 86
+
+
+State 175
+
+   48 ForStmt: KEYFOR OPLEFTPRNT SimpleStmt SPSEMICOLON BoolExpr SPSEMICOLON . SimpleStmt OPRIGHTPRNT Stmt
+
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    $default  reduce using rule 36 (SimpleStmt)
+
+    SimpleStmt  go to state 178
+    LValue      go to state 77
+    Call        go to state 78
+    Expr        go to state 85
+    Constant    go to state 86
+
+
+State 176
+
+   43 Call: Expr SPDOT IDENTIFIER OPLEFTPRNT Actuals OPRIGHTPRNT .
+
+    $default  reduce using rule 43 (Call)
+
+
+State 177
+
+   51 IfStmt: KEYIF OPLEFTPRNT BoolExpr OPRIGHTPRNT Stmt KEYELSE Stmt .
+
+    $default  reduce using rule 51 (IfStmt)
+
+
+State 178
+
+   48 ForStmt: KEYFOR OPLEFTPRNT SimpleStmt SPSEMICOLON BoolExpr SPSEMICOLON SimpleStmt . OPRIGHTPRNT Stmt
+
+    OPRIGHTPRNT  shift, and go to state 179
+
+
+State 179
+
+   48 ForStmt: KEYFOR OPLEFTPRNT SimpleStmt SPSEMICOLON BoolExpr SPSEMICOLON SimpleStmt OPRIGHTPRNT . Stmt
+
+    SPLEFTBRACE      shift, and go to state 46
+    OPLEFTPRNT       shift, and go to state 51
+    OPMINUS          shift, and go to state 52
+    OPNOT            shift, and go to state 53
+    TYPEVOID         shift, and go to state 12
+    TYPEINTEGER      shift, and go to state 13
+    TYPEFLOAT        shift, and go to state 14
+    TYPEBOOL         shift, and go to state 15
+    TYPESTRING       shift, and go to state 16
+    KEYCLASS         shift, and go to state 17
+    KEYNEW           shift, and go to state 54
+    KEYTHIS          shift, and go to state 55
+    KEYINSTANCEOF    shift, and go to state 56
+    KEYIF            shift, and go to state 57
+    KEYFOR           shift, and go to state 58
+    KEYWHILE         shift, and go to state 59
+    KEYBREAK         shift, and go to state 60
+    KEYRETURN        shift, and go to state 61
+    KEYPRINT         shift, and go to state 62
+    KEYREADINTEGER   shift, and go to state 63
+    KEYREADLINE      shift, and go to state 64
+    CONSTANTNULL     shift, and go to state 65
+    CONSTANTBOOL     shift, and go to state 66
+    CONSTANTINTD     shift, and go to state 67
+    CONSTANTINTH     shift, and go to state 68
+    CONSTANTFLOAT    shift, and go to state 69
+    CONSTANTFLOATSC  shift, and go to state 70
+    CONSTANTSTRING   shift, and go to state 71
+    IDENTIFIER       shift, and go to state 72
+
+    $default  reduce using rule 36 (SimpleStmt)
+
+    VariableDef  go to state 73
+    Variable     go to state 20
+    Type         go to state 37
+    StmtBlock    go to state 74
+    Stmt         go to state 180
+    SimpleStmt   go to state 76
+    LValue       go to state 77
+    Call         go to state 78
+    ForStmt      go to state 79
+    WhileStmt    go to state 80
+    IfStmt       go to state 81
+    ReturnStmt   go to state 82
+    BreakStmt    go to state 83
+    PrintStmt    go to state 84
+    Expr         go to state 85
+    Constant     go to state 86
+
+
+State 180
+
+   48 ForStmt: KEYFOR OPLEFTPRNT SimpleStmt SPSEMICOLON BoolExpr SPSEMICOLON SimpleStmt OPRIGHTPRNT Stmt .
+
+    $default  reduce using rule 48 (ForStmt)

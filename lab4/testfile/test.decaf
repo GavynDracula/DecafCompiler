@@ -1,0 +1,37 @@
+class fruit
+{
+    int kind;
+    int taste;
+    int value(int m, int n)
+    {
+        int result;
+        if (m > 0)
+        {
+            if (m == 1)
+                result = n + taste + kind;
+            else if (m == 2)
+                result = n + taste;
+        }
+        else
+            result = n + taste - kind;
+        return result;
+    }
+}
+
+class Main
+{
+    static int main()
+    {
+        int x;
+        int y;
+        int result;
+        class fruit apple;
+        apple = new fruit();
+        x = ReadInteger();
+        y = ReadInteger();
+        apple.kind = ReadInteger();
+        apple.taste = ReadInteger();
+        Print(apple.value(x, y));
+        return 0;
+    }
+}
